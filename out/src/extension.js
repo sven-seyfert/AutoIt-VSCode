@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 var vscode = require('vscode');
 var launch = require('child_process').execFile;
+var path = require('path');
+var vslc = require('vscode-languageclient');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -13,6 +15,25 @@ function activate(context) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     console.log('AutoIt is now active!');
+
+    // The server is implemented in node
+    var serverModule = context.asAbsolutePath(path.join('server', 'server.js'));
+    // The debug options for the server
+    var debugOptions = { execArgv: ["--nolazy", "--debug=6004"] };
+
+    var serverOptions = {
+        run: { module: serverModule, transport: vslc.TransportKind.ipc },
+        debug: { module: serverModule, transport: vslc.TransportKind.ipc, options: debugOptions }
+    };
+
+    var clientOptions = {
+        documentSelector: ['autoit'],
+        synchronize: {
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/.clientrc')
+        }
+    };
+
+    var server_disposable = new vslc.LanguageClient('AutoItLanguageServer', 'AutoIt Language Server', serverOptions, clientOptions).start();
 
     var runScript = vscode.commands.registerCommand('extension.runScript', function () {
         
@@ -99,7 +120,7 @@ function activate(context) {
         });
     });
 
-    context.subscriptions.push(runScript);
+    context.subscriptions.push(server_disposable);
 }
 exports.activate = activate;
 

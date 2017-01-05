@@ -17,7 +17,9 @@
 		"Snippets"
 	],
 	"dependencies": {
-		"vscode-languageclient": "^2.6.3"
+		"vscode-languageclient": "^2.6.3",
+		"vscode-languageserver": "^2.6.2",
+		"path": "*"
 	},
 	"devDependencies": {
 		"vscode": "^0.11.x",
