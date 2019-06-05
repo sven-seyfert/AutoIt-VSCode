@@ -276,5 +276,10 @@
             }
         }
     },
-    "dependencies": {}
+    "dependencies": {},
+    "scripts": {
+        "vscode:prepublish": "webpack --mode=\"production\"",
+        "compile": "webpack",
+        "watch": "webpack --w"
+    }
 }
