@@ -2,3 +2,7 @@
 .vscode-test/**
 test/**
 .gitignore
+out/
+src/
+webpack.config.js
+node_modules
